@@ -1,38 +1,51 @@
 import React from "react";
 import { useState } from "react";
-import { TextArea } from "@react-ui-org/react-ui";
-
-import Button from "@material-ui/core/Button";
-import TableData from "./TableData";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import TextField from "@material-ui/core/TextField";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    "& > *": {
-      margin: theme.spacing(2)
-    }
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    margin: "1em"
-  }
-}));
+//import TableData from "./TableData";
+import "./styles.css";
 
 function FormComponent() {
-  const [usersData, setUsersData] = useState([
-    {
-      name: { value: "" },
-      comment: { value: "" },
-      Email: { value: "" },
-      Contact: { value: "" },
-      Profile: { value: "" }
-    }
-  ]);
+  const [isShown, setIsShown] = useState(false);
+  const [usersData, setUsersData] = useState([]);
+
+  function TableData({ data }) {
+    return (
+      <div>
+        <div>
+          {data &&
+            data.map((item, id) => (
+              <div
+                key={item.id}
+                style={{
+                  width: 250,
+                  height: 250,
+                  marginTop: 10,
+                  marginLeft: 40,
+                  backgroundColor: "powderblue"
+                }}
+              >
+                <div align="center">
+                  {" "}
+                  <img
+                    id="img1"
+                    src={item.Profile.value}
+                    alt="alt"
+                    style={{
+                      width: 100,
+                      height: 100,
+                      marginTop: 30
+                    }}
+                  />
+                </div>
+                <div align="center">{item.name.value}</div>
+                <div align="center">{item.Email.value}</div>
+                <div align="center">{item.Contact.value}</div>
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  }
+
   const [currentUser, setCurrentUser] = useState({
     name: { error: false, value: "" },
     comment: { error: false, value: "" },
@@ -43,14 +56,14 @@ function FormComponent() {
 
   function handleAddNewUser(e) {
     // add new user data
-    e.preventDefault();
+
     const updateUsers = [
       // copy the current users state
       ...usersData,
       currentUser
     ];
     // update the state to the updatedUsers
-    console.log("current->", currentUser.name.value === "");
+    //console.log("current->", currentUser.name.value === "");
 
     setUsersData(updateUsers);
   }
@@ -80,13 +93,16 @@ function FormComponent() {
       Profile: { ...currentUser.Profile, value: e.target.value }
     });
   }
+  function handle(e) {
+    setIsShown(true);
+    //return <TableData data={usersData} />;
+  }
   return (
-    <Card variant="outlined">
-      <h3>Share your experiences</h3>
-      <form>
-        <div>
+    <div className="box1">
+      <div className="box2">
+        <form>
           <label>Please Enter your Name</label>
-          <TextField
+          <input
             margin="dense"
             fullWidth={true}
             value={currentUser.name.value}
@@ -95,8 +111,10 @@ function FormComponent() {
             id="outlined-basic"
             variant="outlined"
           />
-          <label>Please Enter your Email Id</label>
-          <TextField
+          <br />
+          <label>Please Enter your EmailId</label>
+
+          <input
             margin="dense"
             fullWidth={true}
             value={currentUser.Email.value}
@@ -105,8 +123,9 @@ function FormComponent() {
             id="outlined-basic"
             variant="outlined"
           />
+          <br />
           <label>Enter your Contact Number</label>
-          <TextField
+          <input
             margin="dense"
             fullWidth={true}
             value={currentUser.Contact.value}
@@ -115,8 +134,9 @@ function FormComponent() {
             id="outlined-basic"
             variant="outlined"
           />
+          <br />
           <label>Paste your Profile Pic Url</label>
-          <TextField
+          <input
             margin="dense"
             fullWidth={true}
             value={currentUser.Profile.value}
@@ -125,19 +145,28 @@ function FormComponent() {
             id="outlined-basic"
             variant="outlined"
           />
+        </form>
+        <div
+          align="center"
+          style={{
+            marginRight: 65
+          }}
+        >
+          {" "}
+          <button
+            onClick={() => {
+              handleAddNewUser();
+              handle();
+            }}
+          >
+            {" "}
+            Submit
+          </button>{" "}
         </div>
-      </form>
+      </div>
 
-      <Button
-        type="Post"
-        onClick={handleAddNewUser}
-        variant="contained"
-        color="primary"
-      >
-        Submit
-      </Button>
-      <TableData data={usersData} />
-    </Card>
+      {isShown && <TableData data={usersData} />}
+    </div>
   );
 }
 
