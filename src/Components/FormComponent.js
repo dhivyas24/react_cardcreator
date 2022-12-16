@@ -8,23 +8,31 @@ function FormComponent() {
   const [usersData, setUsersData] = useState([]);
 
   function TableData({ data }) {
+    function deleteData(key) {
+      console.log(key);
+      setUsersData((current) => {
+        return current.filter((noteItem, index) => {
+          return index !== key;
+        });
+      });
+    }
     return (
+      // {console.log(item)}
       <div>
         <div>
           {data &&
             data.map((item, id) => (
               <div
-                key={item.id}
+                key={id}
                 style={{
                   width: 250,
                   height: 250,
                   marginTop: 10,
                   marginLeft: 40,
-                  backgroundColor: "powderblue"
+                  backgroundColor: "beige"
                 }}
               >
                 <div align="center">
-                  {" "}
                   <img
                     id="img1"
                     src={item.Profile.value}
@@ -39,6 +47,16 @@ function FormComponent() {
                 <div align="center">{item.name.value}</div>
                 <div align="center">{item.Email.value}</div>
                 <div align="center">{item.Contact.value}</div>
+
+                <button
+                  onClick={() => {
+                    var key = id;
+                    //console.log(key);
+                    deleteData(key);
+                  }}
+                >
+                  DELETE
+                </button>
               </div>
             ))}
         </div>
@@ -152,16 +170,14 @@ function FormComponent() {
             marginRight: 65
           }}
         >
-          {" "}
           <button
             onClick={() => {
               handleAddNewUser();
               handle();
             }}
           >
-            {" "}
             Submit
-          </button>{" "}
+          </button>
         </div>
       </div>
 
